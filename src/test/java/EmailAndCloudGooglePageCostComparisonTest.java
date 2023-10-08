@@ -1,13 +1,12 @@
-
 import org.epam.testing.google.cloud.HomePage;
 import mailPageObjects.YopmailPage;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WindowType;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
+import org.testng.asserts.SoftAssert;
 
 public class EmailAndCloudGooglePageCostComparisonTest {
     private WebDriver driver;
@@ -15,15 +14,16 @@ public class EmailAndCloudGooglePageCostComparisonTest {
     private static String actualEstimatedCost;
 
     @BeforeClass
-    public void pricingCalculatorConfiguration() {
+    public void setup() {
         driver = new ChromeDriver();
+    }
 
+    @Test(priority = 1)
+    public void generateEmailAddress() {
         YopmailPage yopmailPage = new YopmailPage(driver);
-        String emailAddress = yopmailPage
-                .openPage()
-                .generateEmail()
-                .getEmailAddress();
-
+        yopmailPage.openPage();
+        yopmailPage.generateEmail();
+        String emailAddress = yopmailPage.getEmailAddress();
         driver.switchTo().newWindow(WindowType.TAB);
 
         HomePage cloudGoogleHomepage = new HomePage(driver);
@@ -31,22 +31,31 @@ public class EmailAndCloudGooglePageCostComparisonTest {
                 .openPage()
                 .searchOnRequest()
                 .followPricingCalculatorLink()
-                .fillForm().sendEmail(emailAddress).getTotalEstimatedCost();
+                .fillForm()
+                .sendEmail(emailAddress)
+                .getTotalEstimatedCost();
+    }
 
+    @Test(priority = 2)
+    public void checkEmailForActualCost() {
+        // Switch to the Yopmail tab
+        driver.switchTo().window(driver.getWindowHandles().toArray()[0].toString());
 
-        driver.switchTo().window(yopmailPage.getMailHomePageHandle());
+        YopmailPage yopmailPage = new YopmailPage(driver);
         yopmailPage.checkEmailBox();
-
         actualEstimatedCost = yopmailPage.getTotalEstimatedCost();
     }
 
-    @Test
-    public void estimatedCostTest() {
-        Assert.assertEquals (actualEstimatedCost, expectedEstimatedCost, "The estimated cost is incorrect!");
+
+    @Test(priority = 3)
+    public void compareCosts() {
+        SoftAssert softAssert = new SoftAssert();
+        softAssert.assertEquals(actualEstimatedCost, expectedEstimatedCost, "The estimated cost is incorrect!");
+        softAssert.assertAll();
     }
 
     @AfterClass
-    public void browserTearDown() {
+    public void teardown() {
         driver.quit();
     }
 }
