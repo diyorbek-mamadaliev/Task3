@@ -17,8 +17,5 @@ TestNG has been incorporated into the code, along with soft assertions. This int
 ## @FindBy Annotations
 One notable improvement in this project is the use of the `@FindBy` annotations for the first time. These annotations simplify the process of interacting with web elements, improving code clarity and reducing the risk of errors.
 
-## Pop-up Ad Handling
-A new function has been added to automatically handle pop-up ads on the yopmail page if they appear. This enhancement ensures a smoother user experience and prevents interruptions during testing.
-
 ## Conclusion
 These code improvements and enhancements have resulted in a more organized, readable, maintainable, and robust codebase. They contribute to a more efficient testing process and a better overall user experience.

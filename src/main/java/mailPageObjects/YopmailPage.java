@@ -24,9 +24,6 @@ public class YopmailPage {
     @FindBy(xpath = TOTAL_ESTIMATED_COST)
     private WebElement totalEstimatedCost;
 
-    // Define the XPath for the pop-up ad close button
-    private static final String POPUP_AD_CLOSE_BUTTON_XPATH = "your_xpath_here"; // Replace with the actual XPath
-
     public YopmailPage(WebDriver driver) {
         this.driver = driver;
         PageFactory.initElements(driver, this);
@@ -42,7 +39,6 @@ public class YopmailPage {
 
     public YopmailPage generateEmail() {
         waitUntilVisibility(newEmail).click();
-        handlePopupAd(); // Handle the pop-up ad after clicking "Generate New Email"
         return this;
     }
 
@@ -69,18 +65,5 @@ public class YopmailPage {
 
     private WebElement waitUntilVisibility(WebElement webElement) {
         return new WebDriverWait(driver, Duration.ofSeconds(EXPLICIT_WAIT)).until(ExpectedConditions.visibilityOf(webElement));
-    }
-
-    private void handlePopupAd() {
-        try {
-            // if the pop-up ad close button is present and click it if it is
-            WebElement popupAdCloseButton = driver.findElement(By.xpath(POPUP_AD_CLOSE_BUTTON_XPATH));
-            if (popupAdCloseButton.isDisplayed()) {
-                popupAdCloseButton.click();
-            }
-        } catch (Exception e) {
-            // to handle exceptions if the close button or the pop-up ad is not found or cannot be interacted and log about them
-            System.out.println("The pop-up ad close button is not found or cannot be interacted with!");
-        }
     }
 }
