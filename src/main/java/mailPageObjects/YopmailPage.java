@@ -3,7 +3,6 @@ package mailPageObjects;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.NoSuchFrameException;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -39,12 +38,7 @@ public class YopmailPage {
     }
 
     public YopmailPage generateEmail() {
-        newEmail.click();
-        // to handle the case when the iframe exists
-        if (isIframePresent("google_esf")) {
-            driver.navigate().refresh();
-            newEmail.click();
-        }
+        waitUntilVisibility(newEmail).click();
         return this;
     }
 
@@ -71,17 +65,5 @@ public class YopmailPage {
 
     private WebElement waitUntilVisibility(WebElement webElement) {
         return new WebDriverWait(driver, Duration.ofSeconds(EXPLICIT_WAIT)).until(ExpectedConditions.visibilityOf(webElement));
-    }
-
-    private boolean isIframePresent(String iframeName) {
-        try {
-            // Check if the iframe with the given name is present
-            driver.switchTo().frame(iframeName);
-            driver.switchTo().defaultContent();
-            return true;
-        } catch (NoSuchFrameException e) {
-            // If NoSuchFrameException is thrown, the iframe is not present
-            return false;
-        }
     }
 }
