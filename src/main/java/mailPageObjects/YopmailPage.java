@@ -38,7 +38,10 @@ public class YopmailPage {
     }
 
     public YopmailPage generateEmail() {
-        waitUntilVisibility(newEmail).click();
+        newEmail.click();
+        // Refresh the page once
+        driver.navigate().refresh();
+        newEmail.click();
         return this;
     }
 
