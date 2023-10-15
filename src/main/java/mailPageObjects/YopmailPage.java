@@ -43,9 +43,6 @@ public class YopmailPage {
     }
 
     public String getEmailAddress() {
-        if (generatedEmail.getText().isEmpty()) {
-            waitUntilVisibility(generatedEmail);
-        }
         return waitUntilVisibility(generatedEmail).getText();
     }
 
