@@ -34,6 +34,11 @@ public class EmailAndCloudGooglePageCostComparisonTest {
                 .fillForm()
                 .sendEmail(emailAddress)
                 .getTotalEstimatedCost();
+
+        // Assert that the expectedEstimatedCost is not null or empty
+        SoftAssert softAssert = new SoftAssert();
+        softAssert.assertNotNull(expectedEstimatedCost, "Expected estimated cost is null or empty.");
+        softAssert.assertAll();
     }
 
     @Test(priority = 2)
@@ -44,6 +49,11 @@ public class EmailAndCloudGooglePageCostComparisonTest {
         YopmailPage yopmailPage = new YopmailPage(driver);
         yopmailPage.checkEmailBox();
         actualEstimatedCost = yopmailPage.getTotalEstimatedCost();
+
+        // Assert that the actualEstimatedCost is not null or empty
+        SoftAssert softAssert = new SoftAssert();
+        softAssert.assertNotNull(actualEstimatedCost, "Actual estimated cost is null or empty.");
+        softAssert.assertAll();
     }
 
 
